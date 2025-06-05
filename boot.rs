@@ -3,5 +3,6 @@
 
 #[no_mangle]
 pub extern "C" fn bootmain() -> ! {
+  const SECTSIZE: usize = 512;
   loop{}
 }
