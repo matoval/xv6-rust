@@ -24,30 +24,25 @@ static mut STACK: [u8; KSTACKSIZE] = [0; KSTACKSIZE];
 pub extern "C" fn _start() -> ! {
     unsafe {
         asm!(
-            // Enable 4MB pages (PSE)
-            "mov %cr4, eax",
+            "mov eax, cr4",
             "or eax, {cr4_pse}",
-            "mov eax, %cr4",
+            "mov cr4, eax",
 
-            // Load page directory
             "mov eax, {pgdir}",
-            "mov eax, %cr3",
+            "mov cr3, eax",
 
-            // Enable paging + write protection
-            "mov %cr0, eax",
+            "mov eax, cr0",
             "or eax, {cr0_flags}",
-            "mov eax, %cr0",
+            "mov cr0, eax",
 
-            // Set stack pointer
             "mov esp, {stack_top}",
 
-            // Jump to main()
             "jmp {main_fn}",
 
             cr4_pse = const CR4_PSE,
             cr0_flags = const (CR0_PG | CR0_WP),
             pgdir = sym entrypgdir,
-            stack_top = sym STACK_TOP,
+            stack_top = const STACK_TOP,
             main_fn = sym main,
 
             out("eax") _,

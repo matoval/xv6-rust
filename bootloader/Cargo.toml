@@ -1,0 +1,20 @@
+[package]
+name = "xv6-rust"
+version = "0.1.0"
+build = "build.rs"
+edition = "2024"
+
+[dependencies]
+
+[features]
+default = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+
+[[bin]]
+name = "xv6-rust"
+path = "boot.rs"
