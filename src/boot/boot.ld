@@ -9,3 +9,27 @@ SECTIONS {
   .bss : { *(.bss*) *(COMMON) }
 }
 
+ENTRY(_start)
+
+SECTIONS {
+  . = 0x100000; /* Kernel load address */
+
+  .text : {
+    *(.multiboot) /* Multiboot header section */
+    *(.text*)
+  }
+
+  .data : {
+    *(.data*)
+  }
+
+  .bss : {
+    *(.bss*)
+    *(COMMON)
+  }
+
+  .stack : {
+    *(.stack)
+  }
+}
+
